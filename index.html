@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用戶數據展示</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="userTable"></div>
+
+    <script>
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbxJtKnPpBoqwSk3Db_gtXZL2Iv0Gj4kSDQtIpa-WKby53bWUA_YHsfpOOsQAHB319ZFvA/exec';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // 創建表格
+                let tableHTML = `
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>郵箱</th>
+                            <th>角色</th>
+                        </tr>
+                `;
+
+                // 添加數據行
+                data.forEach(user => {
+                    tableHTML += `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += '</table>';
+                document.getElementById('userTable').innerHTML = tableHTML;
+            })
+            .catch(error => {
+                console.error('獲取數據時出錯：', error);
+                document.getElementById('userTable').innerHTML = '獲取數據失敗，請稍後再試。';
+            });
+    </script>
+</body>
+</html>
